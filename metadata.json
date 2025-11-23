@@ -1,0 +1,5 @@
+{
+  "name": "Travel Package Builder AI",
+  "description": "AI-powered travel package creator that generates itineraries, selling points, and pricing estimations based on destination input.",
+  "requestFramePermissions": []
+}
