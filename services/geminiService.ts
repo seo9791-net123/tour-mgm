@@ -11,7 +11,9 @@ export const generatePackageDetails = async (
   duration: number,
   purpose: string,
   accommodation: string,
-  peopleCount: number
+  peopleCount: number,
+  carType: string,
+  guideType: string
 ): Promise<TourPackageData> => {
   if (!apiKey) {
     throw new Error("API Key is missing in environment variables.");
@@ -24,13 +26,20 @@ export const generatePackageDetails = async (
     - Travel Theme/Purpose: ${purpose} (e.g., Honeymoon, Family Trip, Backpacking, Luxury).
     - Accommodation Standard/Type: ${accommodation} (e.g., 5-star hotel, Pool Villa).
     - Group Size: ${peopleCount} people.
+    - Transport/Car Rental: ${carType || 'None selected'}.
+    - Tour Guide: ${guideType || 'None selected'}.
+    
+    Pricing Context (Important):
+    - If "현지 가이드" (Local Guide) is selected, add approx $100/day to the total cost.
+    - If "한국인 가이드" (Korean Guide) is selected, add approx $150/day to the total cost.
+    - If a Car is selected, factor in the rental cost.
     
     The output must be in Korean.
     
     Include:
-    1. A catchy marketing title for the package that reflects the theme and accommodation.
+    1. A catchy marketing title for the package that reflects the theme, accommodation, and included services (like guide/car if applicable).
     2. An estimated price per person in Korean Won (KRW) formatted nicely (e.g., 1,200,000원).
-    3. 3 to 5 key selling points (Product Points) that make this tour special.
+    3. 3 to 5 key selling points (Product Points) that make this tour special. Mention the specific car or guide service if selected.
     4. A HIGHLY DETAILED day-by-day itinerary. 
        - For each day, provide a 'title', a brief 'description' (overview of the day), and a 'schedule' list.
        - The 'schedule' must contain specific time slots (e.g., "09:00", "12:00", "오후", "저녁") and specific activities (e.g., "호텔 조식", "00 관광지 방문", "현지 맛집 중식").
@@ -97,6 +106,8 @@ export const generatePackageDetails = async (
       purpose,
       accommodation,
       peopleCount,
+      carType,
+      guideType
     };
 
   } catch (error) {

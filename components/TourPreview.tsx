@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { TourPackageData } from '../types';
 import { 
@@ -65,6 +66,8 @@ const TourPreview: React.FC<TourPreviewProps> = ({ data }) => {
 📅 기간: ${data.duration}박 ${data.duration + 1}일
 👥 인원: ${data.peopleCount}명
 🏨 숙소 등급: ${data.accommodation || '미지정'}
+🚘 차량: ${data.carType || '선택 안함'}
+🗣 가이드: ${data.guideType || '선택 안함'}
 💰 1인 예상 견적: ${data.price} (항공기 이용료 제외)
 
 ✨ 핵심 포인트:
@@ -111,7 +114,7 @@ ${itineraryText}
         </div>
         
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-8">
-          <div className="flex items-center gap-2 mb-2">
+          <div className="flex flex-wrap items-center gap-2 mb-2">
             <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-blue-500/80 text-white text-xs font-medium backdrop-blur-sm">
               <MapPinIcon className="w-3 h-3" />
               {data.destination}
@@ -124,6 +127,18 @@ ${itineraryText}
               <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-indigo-500/80 text-white text-xs font-medium backdrop-blur-sm">
                 <BedIcon className="w-3 h-3" />
                 {data.accommodation}
+              </span>
+            )}
+            {data.carType && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-green-500/80 text-white text-xs font-medium backdrop-blur-sm">
+                <PlaneIcon className="w-3 h-3" /> {/* Reusing PlaneIcon as Transport Icon */}
+                {data.carType}
+              </span>
+            )}
+            {data.guideType && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-yellow-500/80 text-white text-xs font-medium backdrop-blur-sm">
+                <UsersIcon className="w-3 h-3" />
+                {data.guideType}
               </span>
             )}
           </div>

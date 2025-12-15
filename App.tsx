@@ -29,11 +29,25 @@ const ACCOMMODATION_TYPES = [
   "풀빌라"
 ];
 
+const CAR_OPTIONS = [
+  { value: "", label: "선택 안함" },
+  { value: "7인승", label: "7인승 렌트카" },
+  { value: "16인승", label: "16인승 렌트카" }
+];
+
+const GUIDE_OPTIONS = [
+  { value: "", label: "선택 안함" },
+  { value: "현지 가이드", label: "현지인 가이드 ($100/일)" },
+  { value: "한국인 가이드", label: "한국인 가이드 ($150/일)" }
+];
+
 const App: React.FC = () => {
   // Input State
   const [destination, setDestination] = useState('');
   const [purpose, setPurpose] = useState('');
   const [accommodation, setAccommodation] = useState('');
+  const [carType, setCarType] = useState('');
+  const [guideType, setGuideType] = useState('');
   const [duration, setDuration] = useState(3);
   const [peopleCount, setPeopleCount] = useState(2);
   const [uploadedImage, setUploadedImage] = useState<string | undefined>(undefined);
@@ -48,7 +62,15 @@ const App: React.FC = () => {
 
     setStatus(AppStatus.GENERATING);
     try {
-      const data = await generatePackageDetails(destination, duration, purpose, accommodation, peopleCount);
+      const data = await generatePackageDetails(
+        destination, 
+        duration, 
+        purpose, 
+        accommodation, 
+        peopleCount,
+        carType,
+        guideType
+      );
       // Preserve uploaded image if exists
       setPackageData({ ...data, imageUrl: uploadedImage });
       setStatus(AppStatus.SUCCESS);
@@ -94,7 +116,7 @@ const App: React.FC = () => {
               <h2 className="text-lg font-bold text-gray-900 mb-4">상품 구성하기</h2>
               
               <form onSubmit={handleGenerate} className="space-y-5">
-                {/* Destination Input - Select Box */}
+                {/* Destination Input */}
                 <div>
                   <label htmlFor="destination" className="block text-sm font-medium text-gray-700 mb-1">
                     여행지
@@ -120,7 +142,7 @@ const App: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Purpose Input (Theme) - Select Box */}
+                {/* Purpose Input */}
                 <div>
                   <label htmlFor="purpose" className="block text-sm font-medium text-gray-700 mb-1">
                     여행 테마
@@ -146,7 +168,7 @@ const App: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Accommodation Input - Select Box */}
+                {/* Accommodation Input */}
                 <div>
                   <label htmlFor="accommodation" className="block text-sm font-medium text-gray-700 mb-1">
                     숙소 등급
@@ -163,6 +185,54 @@ const App: React.FC = () => {
                       {ACCOMMODATION_TYPES.map((type) => (
                         <option key={type} value={type}>
                           {type}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                      <ChevronDownIcon className="w-4 h-4" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Car Type Input */}
+                <div>
+                  <label htmlFor="carType" className="block text-sm font-medium text-gray-700 mb-1">
+                    차량 선택 (렌트카)
+                  </label>
+                  <div className="relative">
+                    <select
+                      id="carType"
+                      value={carType}
+                      onChange={(e) => setCarType(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all appearance-none bg-white"
+                    >
+                      {CAR_OPTIONS.map((opt) => (
+                        <option key={opt.label} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                      <ChevronDownIcon className="w-4 h-4" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Guide Type Input */}
+                <div>
+                  <label htmlFor="guideType" className="block text-sm font-medium text-gray-700 mb-1">
+                    가이드 선택
+                  </label>
+                  <div className="relative">
+                    <select
+                      id="guideType"
+                      value={guideType}
+                      onChange={(e) => setGuideType(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all appearance-none bg-white"
+                    >
+                      {GUIDE_OPTIONS.map((opt) => (
+                        <option key={opt.label} value={opt.value}>
+                          {opt.label}
                         </option>
                       ))}
                     </select>
@@ -263,7 +333,7 @@ const App: React.FC = () => {
             <div className="bg-blue-50 rounded-xl p-5 border border-blue-100">
               <h3 className="font-bold text-blue-800 mb-2 text-sm">💡 사용 팁</h3>
               <p className="text-sm text-blue-700 leading-relaxed">
-                원하는 베트남 여행지와 여행 테마, 숙소 등급을 선택하세요. AI가 선택하신 조건에 맞춰 최적의 상품가와 일정을 제안합니다.
+                원하는 베트남 여행지와 여행 테마, 숙소 등급을 선택하세요. AI가 선택하신 조건에 맞춰 최적의 상품가와 일정을 제안합니다. 견적 금액은 상황에 따라 달라질 수 있습니다.
               </p>
             </div>
           </div>
